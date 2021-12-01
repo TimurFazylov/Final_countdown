@@ -4,18 +4,22 @@ from .locators import ProductPageLocators
 
 class ProductPage(BasePage):
     def add_to_basket(self):
-        assert self.is_element_present(*ProductPageLocators.ADD_TO_BASKET_BUTTON), "Button is not presented"
+        assert self.is_element_present(*ProductPageLocators.ADD_TO_BASKET_BUTTON), \
+            "Button is not presented"
         button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
         button.click()
 
     def should_be_product_name(self):
-        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "Product name is not presented"
+        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), \
+            "Product name is not presented"
 
     def should_be_product_price(self):
-        assert self.is_element_present(*ProductPageLocators.PRODUCT_PRICE), "Product price is not presented"
+        assert self.is_element_present(*ProductPageLocators.PRODUCT_PRICE), \
+            "Product price is not presented"
 
     def should_be_message(self):
-        assert self.is_element_present(*ProductPageLocators.MESSAGE), "Message is not presented"
+        assert self.is_element_present(*ProductPageLocators.MESSAGE), \
+            "Message is not presented"
 
     def product_name_should_be_equal_message_name(self):
         product_name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
@@ -26,3 +30,11 @@ class ProductPage(BasePage):
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
         message_price = self.browser.find_element(*ProductPageLocators.MESSAGE_PRICE).text
         assert product_price == message_price, "Product name are not equal message name"
+
+    def should_not_be_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_be_disappeared_message(self):
+        assert self.is_disappeared(*ProductPageLocators.MESSAGE), \
+            "Success message are not disappeared"
