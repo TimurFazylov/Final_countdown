@@ -1,14 +1,49 @@
 import time
 
+import pytest
+
 from .pages.product_page import ProductPage
 
 
-link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-shellcoders-handbook_209/?promo=newYear"
-
-
-def test_guest_can_add_book_to_basket(browser):
+@pytest.mark.parametrize('promo', range(10))
+def test_for_all(browser, promo):
+    link = f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{promo}"
     product_page = ProductPage(browser, link)
     product_page.open()
+    product_page.should_be_product_name()
+    product_page.should_be_product_price()
     product_page.add_to_basket()
     product_page.solve_quiz_and_get_code()
-    time.sleep(600)
+    product_page.should_be_message()
+    product_page.product_name_should_be_equal_message_name()
+    product_page.product_price_should_be_equal_message_price()
+
+#
+# def test_guest_can_add_product_to_basket(browser):
+#     product_page = ProductPage(browser, link)
+#     product_page.open()
+#     product_page.should_be_product_name()
+#     product_page.should_be_product_price()
+#     product_page.add_to_basket()
+#     product_page.solve_quiz_and_get_code()
+#     product_page.should_be_message()
+#
+#
+# def test_product_name_is_equal_message_name(browser):
+#     product_page = ProductPage(browser, link)
+#     product_page.open()
+#     product_page.should_be_product_name()
+#     product_page.should_be_product_price()
+#     product_page.add_to_basket()
+#     product_page.solve_quiz_and_get_code()
+#     product_page.product_name_should_be_equal_message_name()
+#
+#
+# def test_product_price_is_equal_message_price(browser):
+#     product_page = ProductPage(browser, link)
+#     product_page.open()
+#     product_page.should_be_product_name()
+#     product_page.should_be_product_price()
+#     product_page.add_to_basket()
+#     product_page.solve_quiz_and_get_code()
+#     product_page.product_price_should_be_equal_message_price()

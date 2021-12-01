@@ -20,6 +20,7 @@ class BasePage:
             return False
         return True
 
+# Метод сугубо для тестовых сценариев на Stepik
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
