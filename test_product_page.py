@@ -1,4 +1,7 @@
 import pytest
+import time
+import random
+import string
 
 from .pages.product_page import ProductPage
 from .pages.login_page import LoginPage
@@ -22,15 +25,34 @@ link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
 #     product_page.product_price_should_be_equal_message_price()
 
 
-@pytest.mark.skip
-def test_guest_can_add_product_to_basket(browser):
-    product_page = ProductPage(browser, link)
-    product_page.open()
-    product_page.should_be_product_name()
-    product_page.should_be_product_price()
-    product_page.add_to_basket()
-    product_page.solve_quiz_and_get_code()
-    product_page.should_be_message()
+def get_random_string():
+    result_str = ''.join(random.choice(string.ascii_letters) for i in range(10))
+    return result_str
+
+
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        url = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
+        self.login_page = LoginPage(browser, url)
+        self.login_page.open()
+        email = str(time.time()) + "@fakemail.org"
+        password = str(get_random_string())
+        self.login_page.register_new_user(email, password)
+        self.login_page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self, browser):
+        product_page = ProductPage(browser, link)
+        product_page.open()
+        product_page.should_not_be_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        product_page = ProductPage(browser, link)
+        product_page.open()
+        product_page.should_be_product_name()
+        product_page.should_be_product_price()
+        product_page.add_to_basket()
+        product_page.should_be_message()
 
 
 @pytest.mark.skip
