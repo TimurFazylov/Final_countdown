@@ -4,6 +4,7 @@ from .pages.main_page import MainPage
 from .pages.login_page import LoginPage
 from .pages.basket_page import BasketPage
 
+
 link = "http://selenium1py.pythonanywhere.com/"
 
 
@@ -30,5 +31,3 @@ def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
     basket_page.should_be_basket_url()
     basket_page.should_be_empty_basket()
     basket_page.should_be_empty_message()
-    # basket_page.should_not_be_empty_basket()
-    # basket_page.should_not_be_empty_message()
